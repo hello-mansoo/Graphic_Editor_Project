@@ -11,42 +11,46 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import global.Constants.EToolBar;
+import shape.GGroup;
+import shape.GPolygon;
 import shape.GShape;
 import shape.GShape.EOnState;
 import transformer.GDrawer;
 import transformer.GMover;
 import transformer.GResizer;
-//import transformer.GRotator;
+import transformer.GRotator;
 import transformer.GTransformer;
-import shape.GPolygon;;
 
 public class GDrawingPanel extends JPanel {
 
+	// attributes
 	private static final long serialVersionUID = 1L;
-
 	
+	// components
 	private MouseHandler mouseHandler;
-
+	private Clipboard clipboard;
+	
 	private Vector<GShape> shapeVector;
-	public Vector<GShape> getShapeVector() { 
-		return this.shapeVector;
+	public Vector<GShape> getShapeVector() {
+		return shapeVector;
 	}
+	@SuppressWarnings("unchecked")
 	public void restoreShapeVector(Object shapeVector) {
-		if(shapeVector==null) {
+		if(shapeVector == null) {
 			this.shapeVector.clear();
 		} else {
-			this.shapeVector = (Vector<GShape>) shapeVector;			
+			this.shapeVector = (Vector<GShape>)shapeVector;
 		}
 		this.repaint();
 	}
-	
-	//working variable
-	private enum EActionState {eReady, eTransforming}; // cmc占쏙옙 n占쏙옙占쏙옙트 占쏙옙占쏙옙占쏙옙占쏙옙占� pdr占쏙옙 two占쏙옙占쏙옙트 占쏙옙占쏙옙占쏙옙占쏙옙占� 占쌕뀐옙占쏙옙占쏙옙
-	private EActionState eActionState; // 占쌓몌옙占쏙옙 占쏙옙占쏙옙占� 占쏙옙占쏙옙 占싶놂옙占쏙옙 占쏙옙占쏙옙占쏙옙 占싻몌옙 ***占쏙옙 占쏙옙 占쏙옙占쏙옙占� 占쏙옙占쏙옙占쏙옙占� 占쏙옙占쏙옙占쌔억옙占싼댐옙.
+
+	// working variables
+	private enum EActionState {eReady, eTransforming};
+	private EActionState eActionState;
 	
 	private boolean updated;
-	public boolean isUpdated() { return this.updated;}
-	public void setUpdated(boolean updated) {this.updated = updated;}
+	public boolean isUpdated() { return this.updated; }
+	public void setUpdated(boolean updated) { this.updated = updated; }
 	
 	private GShape currentShape;
 	private GTransformer transformer;
@@ -58,7 +62,7 @@ public class GDrawingPanel extends JPanel {
 	public GDrawingPanel() {
 		this.eActionState = EActionState.eReady;
 		this.updated = false;
-		
+
 		this.setForeground(Color.BLACK);
 		this.setBackground(Color.WHITE);
 
@@ -66,47 +70,55 @@ public class GDrawingPanel extends JPanel {
 		this.addMouseListener(this.mouseHandler);
 		this.addMouseMotionListener(this.mouseHandler);
 
+		this.clipboard = new Clipboard();
+		
 		this.shapeVector = new Vector<GShape>();
 		this.transformer = null;
 	}
-
+	
 	public void initialize() {
-
+		
 	}
-
+	
 	public void paint(Graphics graphics) {
-		Graphics2D graphics2d = (Graphics2D) graphics;
+		Graphics2D graphics2d = (Graphics2D)graphics;
 		super.paint(graphics2d);
 
 		for (GShape shape : this.shapeVector) {
 			shape.draw(graphics2d);
 		}
 	}
-
-	private void drawShape() {
-		Graphics2D graphics2d = (Graphics2D) this.getGraphics();
-		graphics2d.setXORMode(getBackground());
-		this.currentShape.draw(graphics2d);
+	
+	private void clearSelected() {
+		for(GShape shape: this.shapeVector) {
+			shape.setSelected(false);
+		}
 	}
-
+	
 	private EOnState onShape(int x, int y) {
 		this.currentShape = null;
-		for (GShape shape : this.shapeVector) {
+		for(GShape shape: this.shapeVector) {
 			EOnState eOnState = shape.onShape(x, y);
-			if (eOnState != null) {
+			if(eOnState != null) {
 				this.currentShape = shape;
 				return eOnState;
 			}
 		}
+		this.clearSelected();
 		return null;
 	}
-
-	private void defineActionState(int x, int y) {		
+	
+	private void defineActionState(int x, int y) {
 		EOnState eOnState = onShape(x, y);
-		if (eOnState == null) {
+		if(eOnState == null) {
+			this.clearSelected();
 			this.transformer = new GDrawer();
 		} else {
-			switch (eOnState) {
+			if(!this.currentShape.isSelected()) {
+				this.clearSelected();
+				this.currentShape.setSelected(true);
+			}
+			switch(eOnState) {
 			case eOnShape:
 				this.transformer = new GMover();
 				break;
@@ -114,38 +126,67 @@ public class GDrawingPanel extends JPanel {
 				this.transformer = new GResizer();
 				break;
 			case eOnRotate:
-				//this.transformer = new GRotator();
+				this.transformer = new GRotator();
 				break;
 			default:
-				// exception
+				//exception
 				this.eActionState = null;
 				break;
 			}
 		}
 	}
-
+	
 	private void initTransforming(int x, int y) {
 		if(this.transformer instanceof GDrawer) {
-			this.currentShape = this.currentTool.clone();
+			this.currentShape = this.currentTool.newInstance();
 		}
 		this.transformer.setgShape(this.currentShape);
 		this.transformer.initTransforming((Graphics2D)this.getGraphics(), x, y);
 	}
 
 	private void keepTransforming(int x, int y) {
-		Graphics2D graphics2D = (Graphics2D) this.getGraphics();
-		graphics2D.setXORMode(this.getBackground());
-		this.transformer.keepTransforming(graphics2D, x, y);
+		Graphics2D graphics2d = (Graphics2D)this.getGraphics();
+		graphics2d.setXORMode(this.getBackground());
+		this.transformer.keepTransforming(graphics2d, x, y);
 	}
 
 	private void finishTransforming(int x, int y) {
-		this.transformer.finishTransforming((Graphics2D)this.getGraphics(), x, y);	
+		this.transformer.finishTransforming((Graphics2D)this.getGraphics(), x, y);
 		if(this.transformer instanceof GDrawer) {
-			this.shapeVector.add(this.currentShape);
+			if(this.currentShape instanceof GGroup) {
+				((GGroup)(this.currentShape)).contains(this.shapeVector);
+			} else {
+				this.shapeVector.add(this.currentShape);
+			}
 		}
+		
+		this.repaint();
+		this.updated = true;
+	}
+	
+	public void cut() {
+		Vector<GShape> selectedShapes = new Vector<GShape>();
+		for(int i=this.shapeVector.size()-1; i>=0; i--) {
+			if(this.shapeVector.get(i).isSelected()) {
+				selectedShapes.add(this.shapeVector.get(i));
+				this.shapeVector.remove(i);
+			}
+		}
+		this.clipboard.setContents(selectedShapes);
+		this.repaint();
 	}
 
-	private class MouseHandler implements MouseListener, MouseMotionListener { //state transition mapping
+	public void copy() {
+
+	}
+
+	public void paste() {
+		Vector<GShape> shapes = this.clipboard.getContents();
+		this.shapeVector.addAll(shapes);
+		repaint();
+	}
+	
+	private class MouseHandler implements MouseListener, MouseMotionListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getClickCount() == 1) {
@@ -154,19 +195,16 @@ public class GDrawingPanel extends JPanel {
 				mouse2Clicked(e);
 			}
 		}
-
-		private void mouse2Clicked(MouseEvent e) {
+		public void mouse2Clicked(MouseEvent e) {
 			if (eActionState == EActionState.eTransforming) {
-				if (currentTool instanceof GPolygon) {
+				if(currentTool instanceof GPolygon) {
 					eActionState = EActionState.eReady;
 				}
 			}
 		}
-
-		private void mouse1Clicked(MouseEvent e) {
+		public void mouse1Clicked(MouseEvent e) {
 			if (eActionState == EActionState.eReady) {
 				if (currentTool instanceof GPolygon) {
-					
 				}
 			} else if (eActionState == EActionState.eTransforming) {
 				if (currentTool instanceof GPolygon) {
@@ -176,8 +214,10 @@ public class GDrawingPanel extends JPanel {
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
+			EOnState eOnState = onShape(e.getX(),e.getY());
 			if (eActionState == EActionState.eTransforming) {
-				if (currentTool instanceof GPolygon) {
+				if(currentTool instanceof GPolygon) {	
+					
 				}
 			}
 		}
@@ -190,16 +230,13 @@ public class GDrawingPanel extends JPanel {
 				eActionState = EActionState.eTransforming;
 			}
 		}
-
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			if (eActionState == EActionState.eTransforming) {
 				finishTransforming(e.getX(), e.getY());
 				eActionState = EActionState.eReady;
-
 			}
 		}
-
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			if (eActionState == EActionState.eTransforming) {
@@ -210,13 +247,9 @@ public class GDrawingPanel extends JPanel {
 		@Override
 		public void mouseEntered(MouseEvent e) {
 		}
-
 		@Override
 		public void mouseExited(MouseEvent e) {
 		}
-
 	}
-
 	
-
 }

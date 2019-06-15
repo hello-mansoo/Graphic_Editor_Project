@@ -4,10 +4,10 @@ import javax.swing.JMenuBar;
 import drawingPanel.GDrawingPanel;
 import global.Constants.EMenu;
 
-public class GMenuBar extends JMenuBar {  //***이거 순서 매우 중요
+public class GMenuBar extends JMenuBar {
 	//attributes
 	private static final long serialVersionUID = 1L;
-
+	
 	//components
 	private GFileMenu fileMenu;
 	private GEditMenu editMenu;
@@ -16,28 +16,28 @@ public class GMenuBar extends JMenuBar {  //***이거 순서 매우 중요
 	private GDrawingPanel drawingPanel;
 	public void associate(GDrawingPanel drawingPanel) {
 		this.drawingPanel = drawingPanel;
-	}		
+	}
 	
 	public GMenuBar() {
-		//initialize attribute
+		// initialize attributes
 		
-		//create components
-		this.fileMenu = new GFileMenu(EMenu.filemenu.getText());
+		// create components
+		this.fileMenu = new GFileMenu(EMenu.fileMenu.getText());
 		this.add(this.fileMenu);
-		this.editMenu = new GEditMenu(EMenu.editmenu.getText());
+		
+		this.editMenu = new GEditMenu(EMenu.editMenu.getText());
 		this.add(this.editMenu);
-			
+		
 	}
 
 	public void initialize() {
-		//associate
+		// associate
 		this.fileMenu.associate(this.drawingPanel);
 		this.editMenu.associate(this.drawingPanel);
-
-		//initialize components
+		
+		// initialize components
 		this.fileMenu.initialize();
 		this.editMenu.initialize();
+		
 	}
-
-
 }
