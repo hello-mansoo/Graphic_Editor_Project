@@ -1,11 +1,16 @@
 package menu;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.swing.JColorChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 import drawingPanel.GDrawingPanel;
 import global.Constants.EEditMenu;
@@ -25,6 +30,39 @@ public class GEditMenu extends JMenu {
 			menuItem.setActionCommand(eMenuItem.getMethod());
 			menuItem.addActionListener(actionHandler);
 			add(menuItem);
+			
+			switch (eMenuItem) {
+			case redo:
+				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
+				break;
+				
+			case undo:
+				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
+				break;
+				
+			case cut:
+				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
+				break;
+				
+			case copy:
+				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
+				break;
+				
+			case paste:
+				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
+				break;
+				
+			case group:
+				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.CTRL_DOWN_MASK));
+				break;
+				
+			case ungroup:
+				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK));
+				break;
+			case fill:
+				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));
+				break;
+			}
 		}
 	}
 
@@ -66,6 +104,12 @@ public class GEditMenu extends JMenu {
 	public void ungroup() {
 //		this.drawingPanel.ungroup();
 	}
+	
+	public void fill() {
+		Color color = JColorChooser.showDialog(this.drawingPanel, "Set Color", Color.WHITE);
+		this.drawingPanel.fill(color);
+	}
+
 	
 	private class ActionHandler implements ActionListener {
 		@Override

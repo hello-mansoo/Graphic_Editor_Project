@@ -1,5 +1,6 @@
 package drawingPanel;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -87,6 +88,10 @@ public class GDrawingPanel extends JPanel {
 		for (GShape shape : this.shapeVector) {
 			shape.draw(graphics2d);
 		}
+		
+		if(this.currentShape != null) {
+			this.currentShape.draw(graphics2d);
+		}
 	}
 	
 	private void clearSelected() {
@@ -104,7 +109,7 @@ public class GDrawingPanel extends JPanel {
 				return eOnState;
 			}
 		}
-		this.clearSelected();
+		//this.clearSelected();
 		return null;
 	}
 	
@@ -146,8 +151,8 @@ public class GDrawingPanel extends JPanel {
 
 	private void keepTransforming(int x, int y) {
 		Graphics2D graphics2d = (Graphics2D)this.getGraphics();
-		graphics2d.setXORMode(this.getBackground());
 		this.transformer.keepTransforming(graphics2d, x, y);
+		this.repaint();
 	}
 
 	private void finishTransforming(int x, int y) {
@@ -177,13 +182,41 @@ public class GDrawingPanel extends JPanel {
 	}
 
 	public void copy() {
-
+		Vector<GShape> selectedShapes = new Vector<GShape>();
+		for(GShape shape:this.shapeVector) {
+			if(shape.isSelected()) {
+				selectedShapes.add(shape);
+			}
+		}
+		this.clipboard.setContents(selectedShapes);
+		this.repaint();
 	}
 
 	public void paste() {
 		Vector<GShape> shapes = this.clipboard.getContents();
+		for(GShape shape:shapes)shape.verticalPaste();
 		this.shapeVector.addAll(shapes);
+		this.clipboard.setContents(shapes);
+		this.clearSelected();
 		repaint();
+	}
+	
+	public void fill(Color color) {
+		for(GShape shape:this.shapeVector) {
+			if(shape.isSelected()) {
+				shape.setColor(color);
+			}
+		}
+		this.repaint();
+	}
+	
+	public void stroke(int stroke) {
+		for(GShape shape:this.shapeVector) {
+			if(shape.isSelected()) {
+				shape.setStroke(new BasicStroke(stroke));
+			}
+		}
+		this.repaint();
 	}
 	
 	private class MouseHandler implements MouseListener, MouseMotionListener {

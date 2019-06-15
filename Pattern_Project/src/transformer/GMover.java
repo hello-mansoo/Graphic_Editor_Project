@@ -12,9 +12,7 @@ public class GMover extends GTransformer {
 
 	@Override
 	public void keepTransforming(Graphics2D graphics2d, int x, int y) {
-		this.getgShape().draw(graphics2d);
 		this.getgShape().keepMoving(graphics2d,x, y);
-		this.getgShape().draw(graphics2d);
 	}
 
 	@Override

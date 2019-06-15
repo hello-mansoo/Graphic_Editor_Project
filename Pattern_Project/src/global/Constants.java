@@ -15,13 +15,16 @@ public class Constants {
 		;
 		
 		private int value;
+		
 		private EMainFrame(int value) {
 			this.value = value;
 		}
+		
 		public int getValue() {
 			return this.value;
 		}
 	}
+	
 	public enum EToolBar {
 		rectangle("네모", new GRectangle()),
 		select("선택", new GGroup()),
@@ -74,6 +77,7 @@ public class Constants {
 			return this.method;
 		}
 	}
+	
 	public enum EEditMenu {
 		undo("되돌리기", "undo"),
 		redo("다시실행", "redo"),
@@ -82,6 +86,7 @@ public class Constants {
 		paste("붙여넣기","paste"),
 		group("모으기", "group"),
 		ungroup("나누기", "ungroup"),
+		fill("채우기", "fill")
 		;
 		private String text;
 		private String method;

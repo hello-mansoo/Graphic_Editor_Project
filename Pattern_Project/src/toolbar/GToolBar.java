@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import drawingPanel.GDrawingPanel;
@@ -18,6 +19,7 @@ public class GToolBar extends JToolBar {
 	
 	//components
 	private Vector<JRadioButton> buttons;
+	private JTextField stroke;
 	
 	//associations
 	private GDrawingPanel drawingPanel;
@@ -38,6 +40,10 @@ public class GToolBar extends JToolBar {
 			this.add(button);
 			buttonGroup.add(button);
 		}
+		StrokeHandler strokeHandler = new StrokeHandler();
+		stroke = new JTextField();
+		stroke.addActionListener(strokeHandler);
+		this.add(stroke);
 	}
 	public void initialize() {
 		this.buttons.get(EToolBar.rectangle.ordinal()).doClick(); // 오디널은 그 앞 객체가 몇번째 인덱스에 있는지를 가져온다. 두클릭은 강제로 눌려지게.	
@@ -48,5 +54,16 @@ public class GToolBar extends JToolBar {
 		public void actionPerformed(ActionEvent event) {
 			drawingPanel.setCurrentTool(EToolBar.valueOf(event.getActionCommand()));
 		}
+	}
+	
+	private class StrokeHandler implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			int s = Integer.parseInt(stroke.getText());
+			drawingPanel.stroke(s);
+		}
+		
 	}
 }

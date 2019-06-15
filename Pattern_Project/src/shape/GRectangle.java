@@ -1,6 +1,7 @@
 package shape;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 public class GRectangle extends GShape {
 	private static final long serialVersionUID = 1L;
@@ -35,7 +36,9 @@ public class GRectangle extends GShape {
 		int dw = x - px;
 		int dh = y - py;
 		
-		this.rectangle.setLocation(this.rectangle.x+dw, this.rectangle.y+dh);
+		AffineTransform af = new AffineTransform();
+		af.translate(dw, dh);
+		this.shape = af.createTransformedShape(this.shape);
 		
 		this.px = x;
 		this.py = y;

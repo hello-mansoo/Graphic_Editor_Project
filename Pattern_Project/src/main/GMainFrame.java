@@ -18,6 +18,7 @@ public class GMainFrame extends JFrame {
 	
 	public GMainFrame() {
 		// attribute
+		this.setTitle(GMainFrame.class.getSimpleName());
 		this.setLocation(EMainFrame.x.getValue(), EMainFrame.y.getValue());
 		this.setSize(EMainFrame.w.getValue(), EMainFrame.h.getValue());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
