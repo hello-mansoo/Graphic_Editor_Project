@@ -35,6 +35,7 @@ public class GDrawingPanel extends JPanel {
 	public Vector<GShape> getShapeVector() {
 		return shapeVector;
 	}
+	
 	@SuppressWarnings("unchecked")
 	public void restoreShapeVector(Object shapeVector) {
 		if(shapeVector == null) {
@@ -83,6 +84,7 @@ public class GDrawingPanel extends JPanel {
 	
 	public void paint(Graphics graphics) {
 		Graphics2D graphics2d = (Graphics2D)graphics;
+		
 		super.paint(graphics2d);
 
 		for (GShape shape : this.shapeVector) {
@@ -213,7 +215,7 @@ public class GDrawingPanel extends JPanel {
 	public void stroke(int stroke) {
 		for(GShape shape:this.shapeVector) {
 			if(shape.isSelected()) {
-				shape.setStroke(new BasicStroke(stroke));
+				shape.setStroke(stroke);
 			}
 		}
 		this.repaint();

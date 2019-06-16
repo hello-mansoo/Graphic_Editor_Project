@@ -3,6 +3,8 @@ package global;
 import shape.GShape;
 import shape.GRectangle;
 import shape.GPolygon;
+import shape.GEllipse;
+import shape.GLine;
 import shape.GGroup;
 
 public class Constants {
@@ -10,7 +12,7 @@ public class Constants {
 	public enum EMainFrame {
 		x(200),
 		y(100),
-		w(400),
+		w(800),
 		h(600),
 		;
 		
@@ -27,8 +29,10 @@ public class Constants {
 	
 	public enum EToolBar {
 		rectangle("네모", new GRectangle()),
-		select("선택", new GGroup()),
+		ellipse("원",new GEllipse()),
+		line("선",new GLine()),
 		polygon("폴리곤", new GPolygon()),
+		select("선택", new GGroup()),
 		;
 		private String text;
 		private GShape shape;

@@ -30,7 +30,7 @@ public abstract class GShape implements Cloneable, Serializable {
 	private GAnchors anchors;
 	private EAnchors anchor;
 	private Color color;
-	private Stroke stroke;
+	private int stroke;
 
 	private boolean selected;
 
@@ -41,15 +41,12 @@ public abstract class GShape implements Cloneable, Serializable {
 	public void setShape(Shape shape) {
 		this.shape = shape;
 	}
-	
 
 	public void setColor(Color color) {
 		this.color = color;
 	}
-	
-	
 
-	public void setStroke(Stroke stroke) {
+	public void setStroke(int stroke) {
 		this.stroke = stroke;
 	}
 
@@ -116,11 +113,14 @@ public abstract class GShape implements Cloneable, Serializable {
 			graphics2d.fill(this.shape);
 			graphics2d.setColor(temp);
 		}
-		if (this.stroke!=null) {
-			graphics2d.setStroke(stroke);
+		
+		if (this.stroke!=0) {
+			graphics2d.setStroke(new BasicStroke(this.stroke));
 		}
+		
 		graphics2d.draw(this.shape);
 		graphics2d.setStroke(new BasicStroke(1));
+		
 		if (this.selected) {
 			this.anchors.setBoundingRect(this.shape.getBounds());
 			this.anchors.draw(graphics2d);
@@ -128,14 +128,15 @@ public abstract class GShape implements Cloneable, Serializable {
 	}
 
 	public void verticalPaste() {
-		AffineTransform a = new AffineTransform();
-		a.translate(10, 10);
-		this.shape = a.createTransformedShape(this.shape);
+		AffineTransform affineTransform = new AffineTransform();
+		affineTransform.translate(10, 10);
+		this.shape = affineTransform.createTransformedShape(this.shape);
 	}
 
 	public EOnState onShape(int x, int y) {
 		if (this.selected) {
 			EAnchors eAnchor = this.anchors.onShape(x, y);
+			
 			if (eAnchor == EAnchors.RR) {
 				return EOnState.eOnRotate;
 			} else if (eAnchor == null) {

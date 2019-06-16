@@ -18,9 +18,6 @@ public class GRectangle extends GShape {
 		return new GRectangle();
 	}
 	
-//	public GShape clone() {
-//	}
-	
 	public void setOrigin(int x, int y) {
 		this.rectangle.setBounds(x, y, 0, 0);
 	}
@@ -30,6 +27,7 @@ public class GRectangle extends GShape {
 	}
 
 	public void addPoint(int x, int y) {
+		
 	}
 	
 	public void keepMoving(Graphics2D graphics2d, int x, int y) {

@@ -40,4 +40,8 @@ public class GMenuBar extends JMenuBar {
 		this.editMenu.initialize();
 		
 	}
+
+	public void saving() {
+		this.fileMenu.save();
+	}
 }

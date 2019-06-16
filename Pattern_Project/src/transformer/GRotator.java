@@ -31,11 +31,11 @@ public class GRotator extends GTransformer {
     @Override
     public void keepTransforming(Graphics2D graphics2D, int x, int y) {
     	this.getgShape().draw(graphics2D);
-    	AffineTransform affineShape = new AffineTransform();
+    	AffineTransform affineTransform = new AffineTransform();
     	double rotateAngle = Math.toRadians(computeRotateAngle(rotatePoint, oldPoint, new Point(x,y)));
-    	affineShape.rotate(rotateAngle, this.rotatePoint.getX(), this.rotatePoint.getY());
+    	affineTransform.rotate(rotateAngle, this.rotatePoint.getX(), this.rotatePoint.getY());
     	
-    	this.gShape.setShape(affineShape.createTransformedShape(this.gShape.getShape()));
+    	this.gShape.setShape(affineTransform.createTransformedShape(this.gShape.getShape()));
     	this.getgShape().draw(graphics2D);
     	this.setOldPoint(x,y);
     }

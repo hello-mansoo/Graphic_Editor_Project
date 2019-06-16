@@ -41,9 +41,11 @@ public class GAnchors implements Serializable{
 		}
 
 	}
+	
 	public void setBoundingRect(Rectangle r) {
 		for(EAnchors eAnchor: EAnchors.values()) {
 			int x=0, y=0;
+			
 			switch (eAnchor) {
 			case NW:
 				x = r.x;
@@ -82,6 +84,7 @@ public class GAnchors implements Serializable{
 				y = r.y - 50;
 				break;
 			}
+			
 			x = x - dw;
 			y = y - dh;
 			this.anchors.get(eAnchor.ordinal()).setFrame(x, y, w, h);

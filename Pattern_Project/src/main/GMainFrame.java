@@ -1,5 +1,7 @@
 package main;
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
@@ -15,6 +17,7 @@ public class GMainFrame extends JFrame {
 	private GMenuBar menuBar;
 	private GToolBar toolBar;
 	private GDrawingPanel drawingPanel;
+	private ExitHandler exitHandler;
 	
 	public GMainFrame() {
 		// attribute
@@ -23,6 +26,8 @@ public class GMainFrame extends JFrame {
 		this.setSize(EMainFrame.w.getValue(), EMainFrame.h.getValue());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		this.exitHandler = new ExitHandler();
+		this.addWindowListener(exitHandler);
 		this.setLayout(new BorderLayout());
 		// components
 		this.menuBar = new GMenuBar();
@@ -45,5 +50,10 @@ public class GMainFrame extends JFrame {
 		this.toolBar.initialize();
 		this.drawingPanel.initialize();
 		
+	}
+	class ExitHandler extends WindowAdapter{
+		public void windowClosing(WindowEvent e) {
+			menuBar.saving();
+		}
 	}
 }

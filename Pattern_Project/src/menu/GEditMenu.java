@@ -59,6 +59,7 @@ public class GEditMenu extends JMenu {
 			case ungroup:
 				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK));
 				break;
+			
 			case fill:
 				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));
 				break;
@@ -71,6 +72,7 @@ public class GEditMenu extends JMenu {
 	}
 
 	public void initialize() {
+		
 	}
 	
 	private void invokeMethod(String name) {
@@ -86,21 +88,27 @@ public class GEditMenu extends JMenu {
 	public void undo() {
 //		this.drawingPanel.undo();
 	}
+	
 	public void redo() {
 //		this.drawingPanel.redo();
 	}
+	
 	public void cut() {
 		this.drawingPanel.cut();
 	}
+	
 	public void copy() {
 		this.drawingPanel.copy();
 	}
+	
 	public void paste() {
 		this.drawingPanel.paste();
 	}
+	
 	public void group() {
 //		this.drawingPanel.group();
 	}
+	
 	public void ungroup() {
 //		this.drawingPanel.ungroup();
 	}
@@ -110,7 +118,6 @@ public class GEditMenu extends JMenu {
 		this.drawingPanel.fill(color);
 	}
 
-	
 	private class ActionHandler implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {

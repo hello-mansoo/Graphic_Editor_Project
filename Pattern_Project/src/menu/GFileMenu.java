@@ -106,7 +106,9 @@ public class GFileMenu extends JMenu {
 		JFileChooser chooser = new JFileChooser(this.directory);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Graphics Data", "god");
 		chooser.setFileFilter(filter);
+		
 		int returnVal = chooser.showOpenDialog(this.drawingPanel);
+		
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			this.directory = chooser.getCurrentDirectory();
 			this.file = chooser.getSelectedFile();
@@ -140,7 +142,9 @@ public class GFileMenu extends JMenu {
 		JFileChooser chooser = new JFileChooser(this.directory);
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Graphics Data", "god");
 		chooser.setFileFilter(filter);
+		
 		int returnVal = chooser.showSaveDialog(this.drawingPanel);
+		
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			this.directory = chooser.getCurrentDirectory();
 			this.file = chooser.getSelectedFile();
