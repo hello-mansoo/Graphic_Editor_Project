@@ -1,11 +1,12 @@
 package global;
 
-import shape.GShape;
-import shape.GRectangle;
-import shape.GPolygon;
 import shape.GEllipse;
-import shape.GLine;
+import shape.GFreeLine;
 import shape.GGroup;
+import shape.GLine;
+import shape.GPolygon;
+import shape.GRectangle;
+import shape.GShape;
 
 public class Constants {
 	
@@ -28,20 +29,25 @@ public class Constants {
 	}
 	
 	public enum EToolBar {
-		rectangle("네모", new GRectangle()),
-		ellipse("원",new GEllipse()),
-		line("선",new GLine()),
-		polygon("폴리곤", new GPolygon()),
-		select("선택", new GGroup()),
+		rectangle("네모", new GRectangle(), "rsc/Rectangle.png"),
+		ellipse("원",new GEllipse(), "rsc/Ellipse.png"),
+		line("선",new GLine(), "rsc/Line.png"),
+		freeLine("자유곡선", new GFreeLine(), "rsc/FreeLine.png"),
+		select("선택", new GGroup(), "rsc/Selection.png"),
 		;
-		private String text;
+		private String text, image;
 		private GShape shape;
-		private EToolBar(String text, GShape shape) {
+		
+		private EToolBar(String text, GShape shape, String image) {
 			this.text = text;
+			this.image = image;
 			this.shape = shape;
 		}
 		public String getText() {
 			return this.text;
+		}
+		public String getImage() {
+			return this.image;
 		}
 		public GShape getShape() {
 			return this.shape;
@@ -90,7 +96,8 @@ public class Constants {
 		paste("붙여넣기","paste"),
 		group("모으기", "group"),
 		ungroup("나누기", "ungroup"),
-		fill("채우기", "fill")
+		fill("채우기", "fill"), 
+		delete("지우기", "delete")
 		;
 		private String text;
 		private String method;

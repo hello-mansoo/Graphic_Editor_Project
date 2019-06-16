@@ -153,7 +153,7 @@ public class GFileMenu extends JMenu {
 	}
 
 	public void print() {
-
+		this.drawingPanel.print();
 	}
 
 	public void close() {

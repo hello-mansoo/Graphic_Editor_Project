@@ -7,8 +7,13 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import global.Constants.EToolBar;
@@ -22,7 +27,7 @@ import transformer.GResizer;
 import transformer.GRotator;
 import transformer.GTransformer;
 
-public class GDrawingPanel extends JPanel {
+public class GDrawingPanel extends JPanel implements Printable {
 
 	// attributes
 	private static final long serialVersionUID = 1L;
@@ -162,6 +167,7 @@ public class GDrawingPanel extends JPanel {
 		if(this.transformer instanceof GDrawer) {
 			if(this.currentShape instanceof GGroup) {
 				((GGroup)(this.currentShape)).contains(this.shapeVector);
+				this.currentShape = null;
 			} else {
 				this.shapeVector.add(this.currentShape);
 			}
@@ -169,6 +175,19 @@ public class GDrawingPanel extends JPanel {
 		
 		this.repaint();
 		this.updated = true;
+	}
+	
+	public void print() {
+		PrinterJob job = PrinterJob.getPrinterJob();
+		job.setPrintable(this);
+		boolean isPrinted = job.printDialog();
+		if(isPrinted) {
+			try {
+				job.print();
+			} catch(PrinterException e) {
+				JOptionPane.showMessageDialog(this,"Cannot Print");
+			}
+		}
 	}
 	
 	public void cut() {
@@ -201,6 +220,15 @@ public class GDrawingPanel extends JPanel {
 		this.clipboard.setContents(shapes);
 		this.clearSelected();
 		repaint();
+	}
+	
+	public void delete() {
+		for(int i=this.shapeVector.size()-1; i>=0; i--) {
+			if(this.shapeVector.get(i).isSelected()) {
+				this.shapeVector.remove(i);
+			}
+		}
+		this.repaint();
 	}
 	
 	public void fill(Color color) {
@@ -285,6 +313,17 @@ public class GDrawingPanel extends JPanel {
 		@Override
 		public void mouseExited(MouseEvent e) {
 		}
+	}
+
+	@Override
+	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+		if(pageIndex>0) return NO_SUCH_PAGE;
+		Graphics2D graphics2d = (Graphics2D)graphics;
+		graphics2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+		for (GShape shape : this.shapeVector) {
+			shape.draw(graphics2d);
+		}
+		return PAGE_EXISTS;
 	}
 	
 }

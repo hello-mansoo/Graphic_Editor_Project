@@ -63,6 +63,10 @@ public class GEditMenu extends JMenu {
 			case fill:
 				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK));
 				break;
+				
+			case delete:
+				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, InputEvent.CTRL_DOWN_MASK));
+				break;
 			}
 		}
 	}
@@ -116,6 +120,10 @@ public class GEditMenu extends JMenu {
 	public void fill() {
 		Color color = JColorChooser.showDialog(this.drawingPanel, "Set Color", Color.WHITE);
 		this.drawingPanel.fill(color);
+	}
+	
+	public void delete() {
+		this.drawingPanel.delete();
 	}
 
 	private class ActionHandler implements ActionListener {

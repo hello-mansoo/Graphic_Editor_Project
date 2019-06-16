@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.Vector;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -36,8 +37,9 @@ public class GToolBar extends JToolBar {
 		ActionHandler actionHandler = new ActionHandler();
 		
 		for(EToolBar eToolBar: EToolBar.values()) {
-			JRadioButton button = new JRadioButton(eToolBar.getText());
+			JRadioButton button = new JRadioButton();
 			button.setActionCommand(eToolBar.name());
+			button.setIcon(new ImageIcon(eToolBar.getImage()));
 			button.addActionListener(actionHandler);
 			this.buttons.add(button);
 			this.add(button);
