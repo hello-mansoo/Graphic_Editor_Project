@@ -29,19 +29,20 @@ public class Constants {
 	}
 	
 	public enum EToolBar {
-		rectangle("네모", new GRectangle(), "rsc/Rectangle.png"),
-		ellipse("원",new GEllipse(), "rsc/Ellipse.png"),
-		line("선",new GLine(), "rsc/Line.png"),
-		freeLine("자유곡선", new GFreeLine(), "rsc/FreeLine.png"),
-		select("선택", new GGroup(), "rsc/Selection.png"),
+		rectangle("네모", new GRectangle(), "rsc/Rectangle.png", "rsc/Rectangle_Selected.png"),
+		ellipse("원",new GEllipse(), "rsc/Ellipse.png","rsc/Ellipse_Selected.png"),
+		line("선",new GLine(), "rsc/Line.png","rsc/Line_Selected.png"),
+		freeLine("자유곡선", new GFreeLine(), "rsc/FreeLine.png","rsc/FreeLine_Selected.png"),
+		select("선택", new GGroup(), "rsc/Selection.png","rsc/Selection_Selected.png"),
 		;
-		private String text, image;
+		private String text, image, selectedImage;
 		private GShape shape;
 		
-		private EToolBar(String text, GShape shape, String image) {
+		private EToolBar(String text, GShape shape, String image, String selectedImage) {
 			this.text = text;
 			this.image = image;
 			this.shape = shape;
+			this.selectedImage = selectedImage;
 		}
 		public String getText() {
 			return this.text;
@@ -51,6 +52,9 @@ public class Constants {
 		}
 		public GShape getShape() {
 			return this.shape;
+		}
+		public String getSelectedImage() {
+			return this.selectedImage;
 		}
 	}
 	

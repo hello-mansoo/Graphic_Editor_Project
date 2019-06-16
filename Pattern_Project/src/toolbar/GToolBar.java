@@ -40,6 +40,7 @@ public class GToolBar extends JToolBar {
 			JRadioButton button = new JRadioButton();
 			button.setActionCommand(eToolBar.name());
 			button.setIcon(new ImageIcon(eToolBar.getImage()));
+			button.setSelectedIcon(new ImageIcon(eToolBar.getSelectedImage()));
 			button.addActionListener(actionHandler);
 			this.buttons.add(button);
 			this.add(button);
